@@ -17,7 +17,7 @@ def tongji3(cut_res:list): # 统计词和词之间的距离
                 dic = word_dic_3.get(cur_wd, {})
                 for wd in t_lst:
                     if wd != cur_wd and wd != repl:
-                        dic[wd]=dic.get(wd,[1,0])
+                        dic[wd]=dic.get(wd,[float('inf'),0])
                         d=abs(t_lst.index(wd)-t_lst.index(cur_wd))
                         dic[wd][0] = (d if d < dic[wd][0] else dic[wd][0])
                         dic[wd][1] = (d if d > dic[wd][1] else dic[wd][1])
