@@ -1,9 +1,8 @@
 # 🪨 石器时代 NLP
 
-[![python](https://img.shields.io/badge/python-3.9-blue)]()
+[![python](https://img.shields.io/badge/python-3.10-blue)]()
 [![Status](https://img.shields.io/badge/status-experimental-orange)]()
-[![Version](https://img.shields.io/badge/version-3-blue)]()
-[![Next](https://img.shields.io/badge/next-V4-blue)]()
+[![Version](https://img.shields.io/badge/version-4-blue)]()
 
 > **一个始于 2024 年深夜好奇心的思想实验，促成了复古统计语言模型**
 
@@ -39,7 +38,7 @@
 | 2025.12.08 | —        | DeepMind 发 Evo-Memory，核心思想不谋而合 | — |
 | 2026.07 | —        | 归档整理，建立仓库 | — |
 | 2026.07.29 | **V3**   | 词距离权重（1 / 最小距离） | 数学的精算师 |
-| 未来 | **V4**   | 字典树/图结构重构 | 语言的建筑师 |
+| 2026.08.19 | **V4**   | 图结构字典树（节点 + 缓存 + 可定制 builder） | 语言的建筑师 |
 
 > 版本号解码：`2.1` = 架构 2 + 功能"忆"(yi)；`2.5` = 架构 2 + 功能"网"(wang≈5)
 
@@ -64,6 +63,8 @@
 **V2 预测**：`Score(w) = 0.5 × 邻接 + 0.25 × 共现`
 
 **V3 预测**：`Score(w) = 0.5 × 邻接 + 0.25 × 共现 + 0.25 × (1 / 最小距离)`
+
+**V4 重构**：改用图结构字典树（`Wd_Node` + `_links` 邻接表），支持三档缓存（0 不缓存 / 1 懒加载 / 2 全缓存）、无向 B / 有向 X 模式、可插拔 builder 定制输出格式。
 
 **记忆版（V2.1）**：每次对话实时更新统计字典。你说什么，它记什么。
 
@@ -103,7 +104,8 @@ stone_age_NLP/
 ├── demo_1.py              # 电子鹦鹉演示
 ├── demo_5.py              # 联网版演示
 ├── README.md              # 你正在看的这份
-└── test3.py               # V3：距离加权预测
+├── test3.py               # V3：距离加权预测
+└── test4.py               # V4：图结构字典树
 ```
 
 ---
@@ -113,8 +115,6 @@ stone_age_NLP/
 2025.12.03 我们还在讨论这只"电子鹦鹉"。5 天后（12.08），DeepMind 发布了 **Evo-Memory**，核心思想也是：**"上下文即权重，记忆不是存储，而是压缩。"**
 
 本项目规划中的 V4.6/V4.7 无意中与智谱 AI 的 GLM-4.6/4.7 撞了版本号。一个是千亿参数的通用模型，一个是几千词节点的电子鹦鹉。
-
-> *"GLM 有千亿参数，我有父列表和子列表。你算你的注意力，我算我的共现距离。版本号虽同，道路各异。"*
 
 ---
 
