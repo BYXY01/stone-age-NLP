@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+
+# Local corpus files (download yourself, see README)
+data/

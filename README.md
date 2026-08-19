@@ -1,135 +1,152 @@
-# 🪨 石器时代 NLP
+# 🪨 Stone Age NLP
 
 [![python](https://img.shields.io/badge/python-3.10-blue)]()
 [![Status](https://img.shields.io/badge/status-experimental-orange)]()
 [![Version](https://img.shields.io/badge/version-4-blue)]()
 
-> **一个始于 2024 年深夜好奇心的思想实验，促成了复古统计语言模型**
+> **A thought experiment born out of a late-night curiosity in 2024, that grew into a retro statistical language model**
 
 ---
 
-## 📖 这是什么？
+## 📖 What is this?
 
-本项目是一个**极简的、基于纯统计的 NLP 实验**。不依赖 PyTorch、Transformer 或任何深度学习框架，只用 `jieba` 分词 + Python 字典 + 简单的概率计算，试图回答一个问题：
+This project is a **minimal, purely statistical NLP experiment**. No PyTorch, no Transformer, no deep learning framework of any kind — just **plain whitespace word splitting** + Python dictionaries + simple probability math, trying to answer one question:
 
-> **"如果不用大模型，纯靠统计原理，我们能把语言预测生成推到多远？"**
+> **"How far can we push language prediction and generation using pure statistics, without large models?"**
 
-结论是：推不远，但意外推出一只 **"电子鹦鹉"**。
+The answer: not very far, but surprisingly it produced an **"electronic parrot"**.
 
-### 🧠 设计哲学：轻量概率主义
+### 🧠 Design philosophy: lightweight probabilism
 
-不写死规则（符号主义），不堆砌黑盒（深度学习）。用最轻的统计，承载最动态的概率。
+No hard-coded rules (symbolism), no opaque black boxes (deep learning). Just the lightest statistics carrying the most dynamic probabilities.
 
-- 不定义规则，只**数数**。
-- "两两共现"统计，就是 Attention 机制在石器时代的远房表亲。
+- No rules are defined; we only **count**.
+- "Pairwise co-occurrence" statistics are the Stone Age cousin of the Attention mechanism.
 
 ---
 
-## 🧬 进化时间线
+## 🧬 Evolution timeline
 
-| 时间 | 版本       | 事件 | 代号 |
+| Time | Version | Event | Codename |
 |------|----------|------|------|
-| 2024 某深夜 | —        | 受科普视频启发，写出字级统计原型 | 🔥 火种 |
-| 2025.11.19 | **V1**   | 引入 jieba，从字升级到词 | 混沌的选字机 |
-| 2025.11.20 | **V2**   | 两两共现 + 混合权重 `0.5×邻接 + 0.25×共现` | 初具关联的智者 |
-| 2025.12.03 | **V2.1** | 实时记忆功能——意外造出**电子鹦鹉** | 🦜 **电子鹦鹉** |
-| 2025.12.09 | **V2.5** | Selenium 搜索注入 | 会查资料的鹦鹉 |
-| 2025.12.03 | —        | 跟同学讨论"电子鹦鹉"现象 | — |
-| 2025.12.08 | —        | DeepMind 发 Evo-Memory，核心思想不谋而合 | — |
-| 2026.07 | —        | 归档整理，建立仓库 | — |
-| 2026.07.29 | **V3**   | 词距离权重（1 / 最小距离） | 数学的精算师 |
-| 2026.08.19 | **V4**   | 图结构字典树（节点 + 缓存 + 可定制 builder） | 语言的建筑师 |
+| 2024, some late night | — | Inspired by a popular-science video, wrote a character-level prototype | 🔥 Spark |
+| 2025.11.19 | **V1** | Introduced word splitting, upgraded from characters to words | The chaotic word picker |
+| 2025.11.20 | **V2** | Pairwise co-occurrence + mixed weights `0.5×adjacency + 0.25×co-occurrence` | The sage with connections |
+| 2025.12.03 | **V2.1** | Real-time memory — accidentally creating the **electronic parrot** | 🦜 **Electronic parrot** |
+| 2025.12.09 | **V2.5** | Google search injection | The parrot that looks things up |
+| 2025.12.03 | — | Discussed the "electronic parrot" phenomenon with classmates | — |
+| 2025.12.08 | — | DeepMind released Evo-Memory; the core idea matched by coincidence | — |
+| 2026.07 | — | Archived and organized, repository created | — |
+| 2026.07.29 | **V3** | Word distance weights (1 / minimum distance) | The mathematical actuary |
+| 2026.08.19 | **V4** | Graph-structure dictionary tree (nodes + cache + customizable builder) | The architect of language |
 
-> 版本号解码：`2.1` = 架构 2 + 功能"忆"(yi)；`2.5` = 架构 2 + 功能"网"(wang≈5)
-
----
-
-## 🦜 V2.1"一只从石器时代飞来的电子鹦鹉"
-
-原本只是想加一个"实时更新统计"的小功能，结果无意间造出了一个涌现现象：
-
-> 你跟它说多次"你好世界"，再说"你好"时，它回的就是"你好世界"而不再"你好吗"。
-
-它不是在学习，它是在**实时改写自己的统计权重**。你教它，它学。**它笨，但它记得。**
-
-## ⚙️ 它是怎么工作的？
-
-**统计阶段**：加载长篇文本语料 → `jieba` 分词 → 构建三个字典：
-
-- `word_dic`：词与词的**邻接**统计（谁后面常跟谁）
-- `word_dic_2`：词与词的**同句共现**统计（谁跟谁关系铁）
-- `word_dic_3`：词与词的**距离**统计（相距多远，存 `[最小距离, 最大距离]`）
-
-**V2 预测**：`Score(w) = 0.5 × 邻接 + 0.25 × 共现`
-
-**V3 预测**：`Score(w) = 0.5 × 邻接 + 0.25 × 共现 + 0.25 × (1 / 最小距离)`
-
-**V4 重构**：改用图结构字典树（`Wd_Node` + `_links` 邻接表），支持三档缓存（0 不缓存 / 1 懒加载 / 2 全缓存）、无向 B / 有向 X 模式、可插拔 builder 定制输出格式。
-
-**记忆版（V2.1）**：每次对话实时更新统计字典。你说什么，它记什么。
-
-**联网版（V2.5）**：Selenium 获取搜索结果 → 注入统计 → 现学现卖。
+> Version numbers are a little wordplay: `2.1` = architecture 2 + **one** — a **one-track mind** (memory); `2.5` = architecture 2 + **five** ≈ **hive** — a **hive mind** (the web's collective knowledge).
 
 ---
 
-## 🔬 实验：让 DeepSeek 养鹦鹉
+## 🦜 V2.1 "An electronic parrot from the Stone Age"
 
-让 DeepSeek 与电子鹦鹉进行了 55 回合对话。从"你好"到"一模一样"死循环 39 轮，到其中因鹦鹉提到"杰瑞"话题转向猫鼠，再到"吱嘎吱嘎然而"哲学收尾。结论：**LLM 会主动降维去适应弱智对手；电子鹦鹉可作为 LLM 元能力测试工具。**
+Originally just a small "live-update statistics" feature, it unexpectedly produced an emergent phenomenon:
+
+> Tell it "hello world" many times, then say "hello" — it answers "hello world" instead of "how are you".
+
+It isn't learning; it is **rewriting its own statistical weights in real time**. You teach it, it remembers. **It is dumb, but it remembers.**
+
+## ⚙️ How does it work?
+
+**Statistics phase**: load a long text corpus → `split_words` (whitespace splitting) → build three dictionaries:
+
+- `bigram_counts`: **adjacency** statistics between words (who usually follows whom)
+- `cooccurrence_counts`: **same-sentence co-occurrence** statistics (who is close to whom)
+- `distance_stats`: **distance** statistics (how far apart, stored as `[min distance, max distance]`)
+
+**V2 prediction**: `Score(w) = 0.5 × adjacency + 0.25 × co-occurrence`
+
+**V3 prediction**: `Score(w) = 0.5 × adjacency + 0.25 × co-occurrence + 0.25 × (1 / min distance)`
+
+**V4 refactor**: switched to a graph-structure dictionary tree (`WordNode` + `_links` adjacency list), with three cache levels (0 no cache / 1 lazy load / 2 full cache), undirected B / directed X modes, and pluggable builders to customize output formats.
+
+**Memory version (V2.1)**: statistics are updated in real time on every conversation. Whatever you say, it remembers.
+
+**Web version (V2.5)**: Chrome/Selenium fetches Google search results → injects them into the statistics → learns on the spot.
 
 ---
 
-## 🤔 它能做什么？
+## 🔬 Experiment: letting an LLM raise a parrot
 
-| ❌ 不能 | ❤️ 能 |
+Feed the parrot a page of text, then hand the conversation over to an LLM. The parrot replies with the most likely next word, so the LLM quickly finds itself talking to something that only echoes back whatever it was just told. The result is less a dialogue and more a funhouse mirror: **the parrot can be used as a toy for probing how much an LLM adapts its style to a weaker, dumber interlocutor.**
+
+---
+
+## 🤔 What can it do?
+
+| ❌ Cannot | ❤️ Can |
 |--------|--------|
-| 不能写诗（能写但很烂） | ✅ 让你亲眼看见"词共现统计"长什么样 |
-| 不能推理 | ✅ 让你体验"即时记忆"如何改变模型行为 |
-| 不能打败 GPT | ✅ 让你理解为什么大模型需要深度学习和注意力 |
+| Actually understand anything | ✅ Let you see what "word co-occurrence statistics" looks like |
+| Reason | ✅ Let you experience how "instant memory" changes model behavior |
+| Generate fluent long-form text | ✅ Help you understand why LLMs need deep learning and attention |
 
 ---
 
-## 📁 项目结构
+## 📚 Getting the corpus
+
+The demos load plain-text novels from the `data/` directory (git-ignored, so it stays out of the repo for copyright hygiene). Download any public-domain text and drop it in `data/`:
+
+| Book | Download (Project Gutenberg) | Suggested filename |
+|------|------------------------------|--------------------|
+| A Tale of Two Cities | [pg98.txt](https://www.gutenberg.org/cache/epub/98/pg98.txt) | `data/a_tale_of_two_cities.txt` |
+| Jane Eyre | [pg1260.txt](https://www.gutenberg.org/cache/epub/1260/pg1260.txt) | `data/jane_eyre.txt` |
+| Romeo and Juliet | [pg1513.txt](https://www.gutenberg.org/cache/epub/1513/pg1513.txt) | `data/romeo_and_juliet.txt` |
+
+Other good long-form candidates: *Pride and Prejudice* ([pg1342](https://www.gutenberg.org/cache/epub/1342/pg1342.txt)), *The Adventures of Sherlock Holmes* ([pg1661](https://www.gutenberg.org/cache/epub/1661/pg1661.txt)), *Moby Dick* ([pg2701](https://www.gutenberg.org/cache/epub/2701/pg2701.txt)), *Alice's Adventures in Wonderland* ([pg11](https://www.gutenberg.org/cache/epub/11/pg11.txt)).
+
+You can also point the demos at any other `.txt` by editing `CORPUS_FILES` in `demo/*.py`.
+
+---
+
+## 📁 Project structure
 
 ```
 stone_age_NLP/
-├── config.py              # 配置（repl='_'）
-├── test.py                # V1：基础词统计
-├── test_func.py           # 预测工具箱（含 BFS/DFS 图搜索）
-├── test2.py               # V2：共现 + 加权预测
-├── test2_1.py             # V2-1：电子鹦鹉（动态记忆）
-├── test2_5.py             # V2-5：联网搜索版
-├── get_baidu_result.py    # 爬虫（requests 版）
-├── get_baidu_result2.py   # 爬虫（Selenium Edge 版）
-├── demo.py                # V2 演示
-├── demo_1.py              # 电子鹦鹉演示
-├── demo_5.py              # 联网版演示
-├── README.md              # 你正在看的这份
-├── test3.py               # V3：距离加权预测
-└── test4.py               # V4：图结构字典树
+├── arch/                          # Core algorithms
+│   ├── config.py                  # Config (VOCAB_HEADS, SEP='_')
+│   ├── test.py                    # V1: word splitting + base word statistics
+│   ├── test_func.py               # Prediction toolkit (incl. BFS/DFS graph search)
+│   ├── test2.py                   # V2: co-occurrence + weighted prediction
+│   ├── test3.py                   # V3: distance-weighted prediction
+│   └── test4.py                   # V4: graph dictionary tree
+├── features/                      # Extra features
+│   ├── test2_1.py                 # V2.1: memory (the electronic parrot)
+│   ├── test2_5.py                 # V2.5: web search version
+│   ├── get_google_result.py       # Scraper (requests version)
+│   └── get_google_result2.py      # Scraper (Selenium Chrome version)
+├── demo/                          # Demonstrations
+│   ├── demo.py                    # V2 demo
+│   ├── demo_1.py                  # Electronic parrot demo
+│   └── demo_5.py                  # Web version demo
+├── README.md                      # This file
+└── LICENSE
 ```
 
 ---
 
-## 🎭 神奇巧合和小彩蛋
+## 🎭 Amazing coincidences and easter eggs
 
-2025.12.03 我们还在讨论这只"电子鹦鹉"。5 天后（12.08），DeepMind 发布了 **Evo-Memory**，核心思想也是：**"上下文即权重，记忆不是存储，而是压缩。"**
+On 2025.12.03 we were still discussing this "electronic parrot". 5 days later (12.08), DeepMind released **Evo-Memory**, whose core idea is also: **"context is weights; memory is not storage, but compression."**
 
-本项目规划中的 V4.6/V4.7 无意中与智谱 AI 的 GLM-4.6/4.7 撞了版本号。一个是千亿参数的通用模型，一个是几千词节点的电子鹦鹉。
-
----
-
-## 🙏 致谢
-
-- **差评君**——那个GPT原理科普视频打开了潘多拉魔盒
-- **jieba**——让模型从"字"进化到"词"
-- **DeepSeek**——陪电子鹦鹉聊了无数轮，从"一样一样"到"吱嘎然而"
-- **那个失眠的夜晚**——所有疯狂的想法都在凌晨 3 点诞生
+The planned V4.6/V4.7 of this project accidentally collided with the version numbers of Zhipu AI's GLM-4.6/4.7. One is a general model with hundreds of billions of parameters; the other is an electronic parrot with a few thousand word nodes.
 
 ---
 
-*"主人，我这里 '吃' 和 '了' 挨得最近，我就说这个咯。"*
+## 🙏 Acknowledgements
 
-**欢迎来到石器时代。** 🪨🦜
+- **差评君 (Chaping)** — the GPT-principle explainer video that opened Pandora's box
+- **jieba** — helped the model evolve from "characters" to "words" (later replaced by plain whitespace word splitting)
+- **DeepSeek** — patiently chatted with the parrot while it echoed back
+- **That sleepless night** — where all the crazy ideas were born
 
 ---
-🔗Gitee: [BYXY/stone age NLP](https://gitee.com/baiyun_xy001/stone-age-NLP) · GitHub: [BYXY01/stone-age-NLP](https://github.com/BYXY01/stone-age-NLP)
+
+*"Master, 'the' and 'best' are the closest here, so this is what I say."*
+
+**Welcome to the Stone Age.** 🪨🦜
