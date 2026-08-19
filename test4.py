@@ -87,7 +87,7 @@ class Wd_Node:
         edge['weights_lst']=weights_lst
         if self.config.mode!='B':
             edge['direct'] = self._merge_direct(edge['direct'], direct)
-        if self.parents_lst is not None or self.children_lst is not None:
+        if self.config.mode==2 or self.parents_lst is not None or self.children_lst is not None:
             self.update_cache()
         return edge
 
