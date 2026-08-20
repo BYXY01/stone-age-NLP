@@ -4,32 +4,8 @@ SPDX-License-Identifier: WTFPL
 演示 V1/V2 统计与预测工具箱。
 依赖：arch/core.ipynb（importnb 直接导入）。
 """
-import sys
-from pathlib import Path
+from _bootstrap import core, DATA_DIR
 
-def _find_root(p):
-    for _ in range(4):
-        if (p / "classic").is_dir() or (p / "arch").is_dir():
-            return p
-        p = p.parent
-    return p.parent.parent
-
-REPO_ROOT = _find_root(Path(__file__).resolve().parent)
-sys.path.insert(0, str(REPO_ROOT))
-
-_IN_CLASSIC = (REPO_ROOT / "classic").is_dir()
-if _IN_CLASSIC:
-    # 提取模式：classic/ 已生成，直接导入纯 .py
-    sys.path.insert(0, str(REPO_ROOT / "classic"))
-    import core
-else:
-    # 标准模式：importnb 直接导入 .ipynb
-    from importnb import Notebook
-
-    with Notebook():
-        import arch.core as core
-
-DATA_DIR = REPO_ROOT / "data"
 FILES = ["双城记.txt", "简爱.txt", "罗密欧与朱丽叶.txt"]
 
 

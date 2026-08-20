@@ -94,18 +94,18 @@
 
 ```
 stone-age-NLP/
-├── LICENSE                 # Unlicense —— 整体默认，不设防
+├── LICENSE                 # Unlicense —— 项目整体默认许可
 ├── README.md               # 你正在看的这份
 ├── arch/
-│   ├── LICENSE             # CC BY 4.0 —— 核心思想，用了要提我
+│   ├── LICENSE             # CC BY 4.0 —— 核心思想，使用时需署名
 │   └── core.ipynb          # V1→V4 核心算法（思想实验报告）
 ├── func/
-│   ├── LICENSE             # MIT —— 工具代码，随便用
+│   ├── LICENSE             # MIT —— 工具代码，宽松使用
 │   ├── func2.ipynb         # V2.1 电子鹦鹉 + V2.5 联网版（开头 import arch.core）
 │   ├── get_baidu_result.py # 爬虫（requests 版）
 │   └── get_baidu_result2.py# 爬虫（Selenium Edge 版）
 ├── demo/
-│   ├── LICENSE             # WTFPL —— 演示脚本，完全放开
+│   ├── LICENSE             # WTFPL —— 演示脚本，可自由使用
 │   ├── demo.py             # V1/V2 基础演示
 │   ├── demo_1.py           # 电子鹦鹉演示（V2.1）
 │   └── demo_5.py           # 联网版演示（V2.5）
@@ -116,10 +116,10 @@ stone-age-NLP/
 
 | 层级 | 许可证 | 意图 |
 |------|--------|------|
-| 根目录 | Unlicense | "整体上，我不设防" |
-| arch/ | CC BY 4.0 | 核心思想，用了要署名 |
-| func/ | MIT | 工具代码，随便用 |
-| demo/ | WTFPL | 演示脚本，完全放开 |
+| 根目录 | Unlicense | 项目整体默认许可 |
+| arch/ | CC BY 4.0 | 核心思想，使用时需署名 |
+| func/ | MIT | 工具代码，宽松使用 |
+| demo/ | WTFPL | 演示脚本，可自由使用 |
 
 ### 🚀 两种运行方式
 

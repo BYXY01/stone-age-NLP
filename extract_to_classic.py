@@ -21,7 +21,7 @@ extract_to_classic.py —— 从 .ipynb 提取代码到 classic/ 目录（拆分
     │   ├── get_baidu_result.py   # 复制自 func/
     │   └── get_baidu_result2.py  # 复制自 func/
     └── demo/                     # 复制自 demo/ (WTFPL)
-        ├── __init__.py
+        ├── _bootstrap.py         # 公共引导（路径定位 + 双模式导入）
         ├── demo.py
         ├── demo_1.py
         └── demo_5.py
@@ -59,13 +59,16 @@ MODULE_HEADERS = {
 COPY_FILES = [
     (ROOT / "func" / "get_baidu_result.py", "func/get_baidu_result.py"),
     (ROOT / "func" / "get_baidu_result2.py", "func/get_baidu_result2.py"),
+    (ROOT / "demo" / "_bootstrap.py", "demo/_bootstrap.py"),
     (ROOT / "demo" / "demo.py", "demo/demo.py"),
     (ROOT / "demo" / "demo_1.py", "demo/demo_1.py"),
     (ROOT / "demo" / "demo_5.py", "demo/demo_5.py"),
 ]
 
 # demo 里的 import 在提取后要改指向 classic 包。
-IMPORT_REWRITES = []
+IMPORT_REWRITES = [
+    (r"from demo\._bootstrap import", "from _bootstrap import"),
+]
 
 SPDX_HEADER = """# SPDX-License-Identifier: {license_id}
 # 本文件由 extract_to_classic.py 从 {source} 自动提取。
