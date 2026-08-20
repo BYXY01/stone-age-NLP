@@ -88,24 +88,60 @@
 
 ---
 
-## 📁 项目结构
+## 📁 项目结构（分层许可证架构）
+
+本项目按"思想 → 工具 → 演示"三层组织，每一层用不同的许可证：
 
 ```
-stone_age_NLP/
-├── config.py              # 配置（repl='_'）
-├── test.py                # V1：基础词统计
-├── test_func.py           # 预测工具箱（含 BFS/DFS 图搜索）
-├── test2.py               # V2：共现 + 加权预测
-├── test2_1.py             # V2-1：电子鹦鹉（动态记忆）
-├── test2_5.py             # V2-5：联网搜索版
-├── get_baidu_result.py    # 爬虫（requests 版）
-├── get_baidu_result2.py   # 爬虫（Selenium Edge 版）
-├── demo.py                # V2 演示
-├── demo_1.py              # 电子鹦鹉演示
-├── demo_5.py              # 联网版演示
-├── README.md              # 你正在看的这份
-├── test3.py               # V3：距离加权预测
-└── test4.py               # V4：图结构字典树
+stone-age-NLP/
+├── LICENSE                 # Unlicense —— 整体默认，不设防
+├── README.md               # 你正在看的这份
+├── arch/
+│   ├── LICENSE             # CC BY 4.0 —— 核心思想，用了要提我
+│   └── core.ipynb          # V1→V4 核心算法（思想实验报告）
+├── func/
+│   ├── LICENSE             # MIT —— 工具代码，随便用
+│   ├── func2.ipynb         # V2.1 电子鹦鹉 + V2.5 联网版（开头 import arch.core）
+│   ├── get_baidu_result.py # 爬虫（requests 版）
+│   └── get_baidu_result2.py# 爬虫（Selenium Edge 版）
+├── demo/
+│   ├── LICENSE             # WTFPL —— 演示脚本，完全放开
+│   ├── demo.py             # V1/V2 基础演示
+│   ├── demo_1.py           # 电子鹦鹉演示（V2.1）
+│   └── demo_5.py           # 联网版演示（V2.5）
+└── extract_to_classic.py   # 提取器：ipynb → classic/ 拆分包
+```
+
+### 📜 分层许可证说明
+
+| 层级 | 许可证 | 意图 |
+|------|--------|------|
+| 根目录 | Unlicense | "整体上，我不设防" |
+| arch/ | CC BY 4.0 | 核心思想，用了要署名 |
+| func/ | MIT | 工具代码，随便用 |
+| demo/ | WTFPL | 演示脚本，完全放开 |
+
+### 🚀 两种运行方式
+
+**方式一：直接跑（标准状态，零安装）**
+demo 通过 `importnb` 直接导入 `.ipynb`（`func2.ipynb` 开头自带 `import arch.core`，自足），无需提取：
+```bash
+pip install importnb jieba
+python demo/demo_1.py
+```
+
+**方式二：提取为纯 .py 运行**
+```bash
+python extract_to_classic.py   # 自动生成 classic/（已 gitignore）
+python demo/demo_1.py          # demo 自动改用 classic/ 模块
+```
+
+提取器按每个 code cell 的 `metadata.tags` 把 notebook 拆成独立模块，生成与 main 英文分支同构的包：
+```
+classic/
+├── core/     # arch → core（config/test/test_func/test2/test3/test4）
+├── func/     # test2_1/test2_5 + 爬虫副本
+└── demo/     # demo 脚本副本
 ```
 
 ---
