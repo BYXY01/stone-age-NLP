@@ -168,4 +168,4 @@ classic/
 **欢迎来到石器时代。** 🪨🦜
 
 ---
-🔗Gitee: [BYXY/stone age NLP](https://gitee.com/baiyun_xy001/stone-age-NLP) · GitHub: [BYXY01/stone-age-NLP](https://github.com/BYXY01/stone-age-NLP)
+🔗Gitee: [BYXY/stone age NLP](https://gitee.com/baiyun_xy001/stone-age-NLP) · GitHub: [BYXY01/stone-age-NLP](https://github.com/BYXY01/stone-age-NLP/tree/main_zh)
