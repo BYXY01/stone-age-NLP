@@ -182,6 +182,7 @@ This repository uses a layered licensing model (SPDX identifiers are embedded in
 
 | Scope | License | Notes |
 |-------|---------|-------|
+| Root (`LICENSE`) | **Unlicense** | Project-wide default license |
 | Core architecture (`core/`) | **CC BY 4.0** | Core ideas — attribute when used |
 | Feature extensions (`features/`) | **MIT** | Permissive, easy to reuse |
 | Demo scripts (`demos/`) | **WTFPL** | Do whatever you want |
